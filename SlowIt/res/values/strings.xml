@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="app_name">Slow It!</string>
+    <string name="activity_title">Slow It!</string>
+    <string name="new_game">New game</string>
+    <string name="quit">Quit</string>
+    <string name="button_play">"Play"</string>
+    <string name="version">"Version 1.0"</string>
+    <string name="ok">Ok</string>
+    <!-- What's new dialog -->
+    <string name="first_run_dialog_title">Welcome to Slow it!</string>
+    <string name="first_run_dialog_message">Thanks for downloading Slow it!\n\n
+    Quick start instructions :\n
+    \t• You have to slow the ball with your finger and keep it into the center circle during 10 seconds to access to the next level.\n
+    \n\n Enjoy it!\n
+    </string>
+    <string name="whats_new_dialog_title">What\'s new in Slow it!</string>
+    <string name="whats_new_dialog_message">Thanks for upgrading Slow it!\n
+    <b>New in version 1.0:</b>\n
+    \t• Application can be moved on the SD card.\n
+    \t• Still no ads nor internet access required.\n
+    \n\nEnjoy it and don\'t forget to rate it to support us.
+    </string>
+    <string name="title_level_done">"Great !"</string>
+    <string name="message_level_done">"You've passed the level %d\n\nYour current score is : %d points"</string>
+    <string name="next_level">"Next level"</string>
+    <string name="title_level_failed">"Too bad!"</string>
+    <string name="message_level_failed">"You failed but you can try this level %d again\n\nYour current score is : %d points"</string>
+    <string name="redo_level">"Try again"</string>
+    <string name="title_game_over">"Game over!"</string>
+    <string name="message_game_over">"You didn't passed the level %d\n\nYour final score is : %d points"</string>
+    <string name="title_hiscore">"New HiScore!"</string>
+    <string name="message_hiscore">"Congratulations!\n\nYou failed at level %d\n\nBut you set the new hiscore to : %d points"</string>
+    <string name="label_remaining_time">"Time left : %ds"</string>
+    <string name="label_level">Level : %d (%d)</string>
+    <string name="label_score">Score : %d points</string>
+</resources>
