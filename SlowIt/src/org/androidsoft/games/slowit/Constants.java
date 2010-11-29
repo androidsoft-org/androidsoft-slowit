@@ -21,5 +21,5 @@ package org.androidsoft.games.slowit;
  */
 public class Constants
 {
-    final static int VERSION = 3;
+    final static int VERSION = 4;
 }

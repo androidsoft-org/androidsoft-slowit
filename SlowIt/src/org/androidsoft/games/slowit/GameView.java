@@ -14,6 +14,7 @@
  */
 package org.androidsoft.games.slowit;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -31,6 +32,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import org.androidsoft.games.utils.level.LevelManager;
 
 /**
  *
@@ -53,16 +55,20 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback
     private float mPreviousX;
     private float mPreviousY;
     private SharedPreferences mPrefs;
-    private MainActivity mActivity;
+    private Activity mActivity;
     private Ball ball;
+    private LevelManager mLevelManager;
+    private int mScore;
+    private int mStatus;
 
-    public GameView(Context context, AttributeSet attrs, MainActivity activity, Bundle savedInstanceState)
+    public GameView(Context context, AttributeSet attrs, Activity activity, Bundle savedInstanceState, LevelManager levelManager )
     {
         super(context, attrs);
 
         SurfaceHolder holder = getHolder();
         holder.addCallback(this);
         mActivity = activity;
+        mLevelManager = levelManager;
         mPrefs = activity.getPreferences(0);
 
         thread = new GameThread(holder, context, new Handler()
@@ -114,6 +120,10 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback
         String message = res.getString(R.string.message_level_done, level, score);
         String button = res.getString(R.string.next_level);
         int icon = R.drawable.icon_level_done;
+        mScore = score;
+        mStatus = 1;
+        if( mScore > 15 ) mStatus = 2;
+        if( mScore > 30 ) mStatus = 3;
         showLevelDialog(title, message, icon, button);
     }
 
@@ -124,6 +134,8 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback
         String message = res.getString(R.string.message_level_failed, level, score);
         String button = res.getString(R.string.redo_level);
         int icon = R.drawable.icon;
+        mScore = -1;
+        mStatus = 0;
         showLevelDialog(title, message, icon, button);
     }
 
@@ -177,7 +189,9 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback
                     public void onClick(DialogInterface dialog, int id)
                     {
                         dialog.cancel();
-                        thread.doStart();
+                        mLevelManager.end( mScore, mStatus );
+
+                        // thread.doStart();
                     }
                 });
         builder.setNegativeButton(mContext.getResources().getString(R.string.quit),
@@ -186,7 +200,7 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback
 
                     public void onClick(DialogInterface dialog, int id)
                     {
-                        mActivity.quit();
+                        mLevelManager.end( mScore, mStatus );
                     }
                 });
         AlertDialog alert = builder.create();
@@ -345,7 +359,7 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback
             mMode = STATE_READY;
 
             Resources res = context.getResources();
-            mBackgroundImage = BitmapFactory.decodeResource(res, R.drawable.backgroung);
+            mBackgroundImage = BitmapFactory.decodeResource(res, R.drawable.background);
 
             mInsideTextPaint = new Paint();
             mInsideTextPaint.setAntiAlias(true);
@@ -394,7 +408,7 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback
                 mStartLevel = System.currentTimeMillis();
                 mInside = false;
                 mTimeInside = -1;
-                mLevel++;
+                mLevel = mLevelManager.getLevel();
                 int nBallCount = 1 + (mLevel / 7);
 
 //                nBallCount = 5;
@@ -684,7 +698,7 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback
 
         void levelDone()
         {
-            mScore += mLevelDuration - mTimeLevel + 60 * (mLevel - 1);
+            mScore = mLevelDuration - mTimeLevel;
             setState(STATE_WIN);
 
         }

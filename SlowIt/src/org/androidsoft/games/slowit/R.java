@@ -15,24 +15,31 @@ public final class R {
     public static final class attr {
     }
     public static final class drawable {
-        public static final int backgroung=0x7f020000;
+        public static final int background=0x7f020000;
         public static final int ball=0x7f020001;
-        public static final int icon=0x7f020002;
-        public static final int icon_hiscore=0x7f020003;
-        public static final int icon_level_done=0x7f020004;
-        public static final int shape=0x7f020005;
-        public static final int splash=0x7f020006;
+        public static final int button_1star=0x7f020002;
+        public static final int button_2stars=0x7f020003;
+        public static final int button_3stars=0x7f020004;
+        public static final int button_locked=0x7f020005;
+        public static final int button_new=0x7f020006;
+        public static final int icon=0x7f020007;
+        public static final int icon_hiscore=0x7f020008;
+        public static final int icon_level_done=0x7f020009;
+        public static final int shape=0x7f02000a;
+        public static final int splash=0x7f02000b;
     }
     public static final class id {
-        public static final int button_play=0x7f060004;
-        public static final int container=0x7f060000;
-        public static final int gameview=0x7f060005;
-        public static final int image_splash=0x7f060002;
-        public static final int splash=0x7f060001;
-        public static final int text=0x7f060003;
+        public static final int button_play=0x7f060006;
+        public static final int image_splash=0x7f060004;
+        public static final int level_grid1=0x7f060001;
+        public static final int level_grid2=0x7f060002;
+        public static final int level_scrollview=0x7f060000;
+        public static final int splash=0x7f060003;
+        public static final int text=0x7f060005;
     }
     public static final class layout {
-        public static final int main=0x7f030000;
+        public static final int level_selector=0x7f030000;
+        public static final int splash=0x7f030001;
     }
     public static final class string {
         public static final int activity_title=0x7f050001;

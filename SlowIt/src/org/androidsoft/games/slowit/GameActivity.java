@@ -12,32 +12,39 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package org.androidsoft.games.slowit;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import org.androidsoft.games.utils.level.LevelManager;
 
 /**
  *
  * @author pierre
  */
-public class MainActivity extends AbstractMainActivity
+public class GameActivity extends Activity
 {
-
-    private ViewGroup mView;
     private View mGameView;
+    private LevelManager mLevelManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
 
-        mView = (ViewGroup) findViewById(R.id.gameview);
-        mGameView = new GameView(this, null, this, savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        mView.addView(mGameView);
+        mLevelManager = new LevelManager(this, getIntent());
+
+        mGameView = new GameView(this, null, this, savedInstanceState  , mLevelManager );
+        setContentView(mGameView);
 
         if (savedInstanceState != null)
         {
@@ -49,31 +56,4 @@ public class MainActivity extends AbstractMainActivity
 
     }
 
-    @Override
-    protected void onResume()
-    {
-        // Ideally a game should implement onResume() and onPause()
-        // to take appropriate action when the activity looses focus
-        super.onResume();
-    }
-
-    @Override
-    protected void onPause()
-    {
-        // Ideally a game should implement onResume() and onPause()
-        // to take appropriate action when the activity looses focus
-        super.onPause();
-    }
-
-    protected void newGame()
-    {
-    }
-
-    protected View getGameView()
-    {
-        return mView;
-    }
 }
-
-
-
