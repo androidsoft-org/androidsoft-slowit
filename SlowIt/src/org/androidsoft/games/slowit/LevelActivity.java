@@ -47,10 +47,10 @@ public class LevelActivity extends LevelSelectorActivity
 
         super.onCreate( icicle );
 
-
+/*
         HorizontalScrollView hsv = (HorizontalScrollView) findViewById(R.id.level_scrollview);
         hsv.setHorizontalScrollBarEnabled(false);
-   }
+*/   }
 
 
     public int[] getResButtons()

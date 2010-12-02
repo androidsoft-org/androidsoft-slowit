@@ -17,6 +17,7 @@ package org.androidsoft.games.utils.level;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.widget.ImageView;
 
 /**
@@ -25,9 +26,11 @@ import android.widget.ImageView;
  */
 public class LevelView extends ImageView
 {
+
     Level mLevel;
     int mStatus;
-    public LevelView( Context context , Level level )
+
+    public LevelView(Context context, Level level)
     {
         super(context);
         mLevel = level;
@@ -38,17 +41,17 @@ public class LevelView extends ImageView
     {
         super.onDraw(canvas);
 
-        if( mLevel.getStatus() != Level.LOCKED)
-            {
-        canvas.save();
-        Paint paint = new Paint();
-        paint.setAntiAlias(true);
-        paint.setARGB( 100, 255, 255, 255);
-        paint.setTextAlign(Paint.Align.CENTER);
-        paint.setTextSize(24);
-        canvas.drawText( "" + mLevel.getLevel(), 70 / 2, 70 / 2, paint);
-        canvas.restore();
+        if (mLevel.getStatus() != Level.LOCKED)
+        {
+            canvas.save();
+            Paint paint = new Paint();
+            paint.setAntiAlias(true);
+            paint.setARGB(120, 100, 255, 100);
+            paint.setTextAlign(Paint.Align.CENTER);
+            paint.setTextSize(20);
+            paint.setTypeface(Typeface.DEFAULT_BOLD);
+            canvas.drawText("" + mLevel.getLevel(), 70 / 2, 30, paint);
+            canvas.restore();
         }
     }
-
 }

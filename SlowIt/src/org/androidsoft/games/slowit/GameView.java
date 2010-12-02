@@ -650,10 +650,11 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback
                 canvas.drawCircle(mCanvasWidth / 2, mCanvasHeight / 2, mRadius, mOutsidePaint);
             }
 
-            canvas.drawText(res.getString(R.string.label_remaining_time, mLevelDuration - mTimeLevel), 5, mCanvasHeight - 5, mTimeTextPaint);
-            canvas.drawText(res.getString(R.string.label_level, mLevel, mLife ), mCanvasWidth / 2, mCanvasHeight - 5, mLevelTextPaint);
-            canvas.drawText(res.getString(R.string.label_score, mScore), mCanvasWidth - 5, mCanvasHeight - 5, mScoreTextPaint);
+//            canvas.drawText(res.getString(R.string.label_remaining_time, mLevelDuration - mTimeLevel), 5, mCanvasHeight - 5, mTimeTextPaint);
+//            canvas.drawText(res.getString(R.string.label_level, mLevel, mLife ), mCanvasWidth / 2, mCanvasHeight - 5, mLevelTextPaint);
+//            canvas.drawText(res.getString(R.string.label_score, mScore), mCanvasWidth - 5, mCanvasHeight - 5, mScoreTextPaint);
 
+            canvas.drawText(res.getString(R.string.label_remaining_time, mLevelDuration - mTimeLevel), mCanvasWidth / 2, mCanvasHeight - 5, mLevelTextPaint);
             if (mBalls != null)
             {
                 mBalls.draw(canvas);

@@ -65,7 +65,7 @@ public class LevelAdapter extends BaseAdapter
             imageView.setLayoutParams(new GridView.LayoutParams(70, 70));
             imageView.setAdjustViewBounds(false);
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            imageView.setPadding(8, 8, 8, 8);
+            imageView.setPadding(5, 5, 5, 5);
         } else
         {
             imageView = (LevelView) convertView;

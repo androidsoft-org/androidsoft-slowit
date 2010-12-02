@@ -38,11 +38,12 @@ public class Level
     private int mScore;
     private int mGrid;
 
-    public Level(int level, int status, int grid)
+    public Level( int grid , int level, int status , int score )
     {
         mLevel = level;
         mStatus = status;
         mGrid = grid;
+        mScore = score;
     }
 
     public int getStatus()

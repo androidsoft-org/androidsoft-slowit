@@ -3,20 +3,16 @@
     android:background="@drawable/background"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
-    <HorizontalScrollView
-    android:id="@+id/level_scrollview"
+    <ScrollView android:id="@+id/level_scrollview"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content">
 
 
-        <LinearLayout
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content">
+        <LinearLayout android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
 
-            <TextView android:text="Beginners"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:gravity="center" />
+            <TextView android:text="Beginners"  style="@style/TextTitle" />
 
 
             <GridView
@@ -33,10 +29,7 @@
 
     android:gravity="center"/>
 
-            <TextView android:text="Experts"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:gravity="center" />
+            <TextView android:text="Experts"  style="@style/TextTitle" />
 
             <GridView
     android:id="@+id/level_grid2"
@@ -53,5 +46,5 @@
     android:gravity="center"
 />
         </LinearLayout>
-    </HorizontalScrollView>
+    </ScrollView>
 </LinearLayout>
