@@ -44,25 +44,23 @@ public final class R {
     public static final class string {
         public static final int activity_title=0x7f050001;
         public static final int app_name=0x7f050000;
+        public static final int button_continue=0x7f050002;
         public static final int button_play=0x7f050004;
         public static final int first_run_dialog_message=0x7f050008;
         /**  What's new dialog 
          */
         public static final int first_run_dialog_title=0x7f050007;
-        public static final int label_level=0x7f050016;
-        public static final int label_remaining_time=0x7f050015;
-        public static final int label_score=0x7f050017;
-        public static final int message_game_over=0x7f050012;
-        public static final int message_hiscore=0x7f050014;
+        public static final int label_level=0x7f050014;
+        public static final int label_remaining_time=0x7f050013;
+        public static final int label_score=0x7f050015;
+        public static final int message_hiscore=0x7f050012;
         public static final int message_level_done=0x7f05000c;
         public static final int message_level_failed=0x7f05000f;
-        public static final int new_game=0x7f050002;
         public static final int next_level=0x7f05000d;
         public static final int ok=0x7f050006;
         public static final int quit=0x7f050003;
         public static final int redo_level=0x7f050010;
-        public static final int title_game_over=0x7f050011;
-        public static final int title_hiscore=0x7f050013;
+        public static final int title_hiscore=0x7f050011;
         public static final int title_level_done=0x7f05000b;
         public static final int title_level_failed=0x7f05000e;
         public static final int version=0x7f050005;

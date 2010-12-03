@@ -68,4 +68,9 @@ public class LevelManager
     {
         return mStatus;
     }
+
+    public int getGrid()
+    {
+        return mGrid;
+    }
 }

@@ -18,12 +18,12 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -41,11 +41,8 @@ import org.androidsoft.games.utils.level.LevelManager;
 class GameView extends SurfaceView implements SurfaceHolder.Callback
 {
 
-    private static final String PREF_HISCORE = "slowit.hiscore";
-    private static final int DEFAULT_HISCORE = 30;
     private static final int EVENT_LEVEL_DONE = 1;
     private static final int EVENT_LEVEL_FAILED = 2;
-    private static final int EVENT_GAME_OVER = 3;
     private static final String MSG_DATA_EVENT = "event";
     private static final String MSG_DATA_LEVEL = "level";
     private static final String MSG_DATA_SCORE = "score";
@@ -54,14 +51,13 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback
     private GameThread thread;
     private float mPreviousX;
     private float mPreviousY;
-    private SharedPreferences mPrefs;
     private Activity mActivity;
     private Ball ball;
     private LevelManager mLevelManager;
     private int mScore;
     private int mStatus;
 
-    public GameView(Context context, AttributeSet attrs, Activity activity, Bundle savedInstanceState, LevelManager levelManager )
+    public GameView(Context context, AttributeSet attrs, Activity activity, Bundle savedInstanceState, LevelManager levelManager)
     {
         super(context, attrs);
 
@@ -69,8 +65,7 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback
         holder.addCallback(this);
         mActivity = activity;
         mLevelManager = levelManager;
-        mPrefs = activity.getPreferences(0);
-
+ 
         thread = new GameThread(holder, context, new Handler()
         {
 
@@ -90,9 +85,6 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback
                         onLevelFailed(level, score);
                         break;
 
-                    case EVENT_GAME_OVER:
-                        onGameOver(level, score);
-                        break;
 
                 }
             }
@@ -111,19 +103,31 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback
         setFocusable(true);
     }
 
-   
-
     void onLevelDone(int level, int score)
     {
         Resources res = mContext.getResources();
         String title = res.getString(R.string.title_level_done);
-        String message = res.getString(R.string.message_level_done, level, score);
+        String message = res.getString(R.string.message_level_done, level , score);
         String button = res.getString(R.string.next_level);
         int icon = R.drawable.icon_level_done;
         mScore = score;
         mStatus = 1;
-        if( mScore > 15 ) mStatus = 2;
-        if( mScore > 30 ) mStatus = 3;
+        if (mScore > 15)
+        {
+            mStatus = 2;
+        }
+        if (mScore > 30)
+        {
+            mStatus = 3;
+        }
+        if ( score > mLevelManager.getHiScore())
+        {
+            title = res.getString(R.string.title_hiscore);
+            message = res.getString(R.string.message_hiscore, level, score);
+            button = res.getString(R.string.button_continue);
+            icon = R.drawable.icon_hiscore;
+            showLevelDialog(title, message, icon, button);
+        }
         showLevelDialog(title, message, icon, button);
     }
 
@@ -131,7 +135,7 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback
     {
         Resources res = mContext.getResources();
         String title = res.getString(R.string.title_level_failed);
-        String message = res.getString(R.string.message_level_failed, level, score);
+        String message = res.getString(R.string.message_level_failed, level );
         String button = res.getString(R.string.redo_level);
         int icon = R.drawable.icon;
         mScore = -1;
@@ -139,41 +143,6 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback
         showLevelDialog(title, message, icon, button);
     }
 
-    void onGameOver(int level, int score)
-    {
-        Resources res = mContext.getResources();
-        if (hiscore(score))
-        {
-            String title = res.getString(R.string.title_hiscore);
-            String message = res.getString(R.string.message_hiscore, level, score);
-            String button = res.getString(R.string.new_game);
-            int icon = R.drawable.icon_hiscore;
-            showLevelDialog(title, message, icon, button);
-        } else
-        {
-            String title = res.getString(R.string.title_game_over);
-            String message = res.getString(R.string.message_game_over, level, score);
-            String button = res.getString(R.string.new_game);
-            int icon = R.drawable.icon;
-            showLevelDialog(title, message, icon, button);
-        }
-    }
-
-    boolean hiscore(int score)
-    {
-        boolean bHiScore = false;
-        int hiscore = mPrefs.getInt(PREF_HISCORE, DEFAULT_HISCORE);
-        if (score > hiscore)
-        {
-            bHiScore = true;
-
-            SharedPreferences.Editor editor = mPrefs.edit();
-            editor.putInt(PREF_HISCORE, score);
-            editor.commit();
-        }
-        return bHiScore;
-
-    }
 
     void showLevelDialog(String title, String message, int icon, String button)
     {
@@ -189,9 +158,7 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback
                     public void onClick(DialogInterface dialog, int id)
                     {
                         dialog.cancel();
-                        mLevelManager.end( mScore, mStatus );
-
-                        // thread.doStart();
+                        mLevelManager.end(mScore, mStatus);
                     }
                 });
         builder.setNegativeButton(mContext.getResources().getString(R.string.quit),
@@ -200,7 +167,7 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback
 
                     public void onClick(DialogInterface dialog, int id)
                     {
-                        mLevelManager.end( mScore, mStatus );
+                        mActivity.finish();
                     }
                 });
         AlertDialog alert = builder.create();
@@ -271,7 +238,7 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback
     {
         // start the thread here so that we don't busy-wait in run()
         // waiting for the surface to be created
-        if( ! thread.mRun )
+        if (!thread.mRun)
         {
             thread.setRunning(true);
             thread.start();
@@ -309,7 +276,6 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback
     {
 
         private static final String KEY_LEVEL = "mLevel";
-        private static final String KEY_LIFE = "mLife";
         private static final String KEY_SCORE = "mScore";
         private static final String KEY_LEVEL_DURATION = "mLevelDuration";
         private static final String KEY_RADIUS = "mRadius";
@@ -329,16 +295,13 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback
         private final SurfaceHolder mSurfaceHolder;
         private final Handler mHandler;
         private final Paint mInsideTextPaint;
-        private final Paint mScoreTextPaint;
         private final Paint mTimeTextPaint;
-        private final Paint mLevelTextPaint;
         private final Paint mOutsidePaint;
         private final Paint mInsidePaint;
         private Bitmap mBackgroundImage;
         private int mCanvasHeight = 1;
         private int mCanvasWidth = 1;
         private int mLevel;
-        private int mLife = LIFE_COUNT;
         private int mMode;
         private boolean mRun = false;
         private boolean mInside;
@@ -364,23 +327,15 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback
             mInsideTextPaint = new Paint();
             mInsideTextPaint.setAntiAlias(true);
             mInsideTextPaint.setARGB(255, 0, 255, 0);
-            mInsideTextPaint.setTextSize(30.0f);
+            mInsideTextPaint.setTextSize(36);
+            mInsideTextPaint.setTypeface(Typeface.DEFAULT_BOLD);
             mInsideTextPaint.setTextAlign(Paint.Align.CENTER);
 
-            mScoreTextPaint = new Paint();
-            mScoreTextPaint.setAntiAlias(true);
-            mScoreTextPaint.setARGB(200, 255, 255, 255);
-            mScoreTextPaint.setTextAlign(Paint.Align.RIGHT);
 
             mTimeTextPaint = new Paint();
             mTimeTextPaint.setAntiAlias(true);
             mTimeTextPaint.setARGB(200, 255, 255, 255);
-            mTimeTextPaint.setTextAlign(Paint.Align.LEFT);
-
-            mLevelTextPaint = new Paint();
-            mLevelTextPaint.setAntiAlias(true);
-            mLevelTextPaint.setARGB(200, 255, 255, 255);
-            mLevelTextPaint.setTextAlign(Paint.Align.CENTER);
+            mTimeTextPaint.setTextAlign(Paint.Align.CENTER);
 
             mOutsidePaint = new Paint();
             mOutsidePaint.setAntiAlias(true);
@@ -408,11 +363,8 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback
                 mStartLevel = System.currentTimeMillis();
                 mInside = false;
                 mTimeInside = -1;
-                mLevel = mLevelManager.getLevel();
+                mLevel = mLevelManager.getLevel() + 10 * mLevelManager.getGrid();
                 int nBallCount = 1 + (mLevel / 7);
-
-//                nBallCount = 5;
-
                 mRadius = 50 - 5 * (mLevel % 7) + nBallCount * 5;
                 int nInitialVelocity = 5 * (mLevel % 7);
                 mBalls = new BallList(mCanvasWidth, mCanvasHeight, nBallCount, nInitialVelocity);
@@ -470,7 +422,6 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback
                     map.putBoolean(KEY_RUN, mRun);
                     map.putInt(KEY_MODE, mMode);
                     map.putInt(KEY_LEVEL, mLevel);
-                    map.putInt(KEY_LIFE, mLife);
                     map.putInt(KEY_LEVEL_DURATION, mLevelDuration);
                     map.putInt(KEY_RADIUS, mRadius);
                     map.putInt(KEY_SCORE, mScore);
@@ -494,13 +445,12 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback
             {
                 Log.d("GameView", "restoreState");
                 setState(STATE_PAUSE);
-                if( mBalls != null )
+                if (mBalls != null)
                 {
                     mBalls.restoreState(savedState);
                 }
                 mMode = savedState.getInt(KEY_MODE);
                 mLevel = savedState.getInt(KEY_LEVEL);
-                mLife = savedState.getInt(KEY_LIFE);
                 mLevelDuration = savedState.getInt(KEY_LEVEL_DURATION);
                 mScore = savedState.getInt(KEY_SCORE);
                 mRadius = savedState.getInt(KEY_RADIUS);
@@ -590,20 +540,15 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback
                 mMode = mode;
 
                 if ((mMode == STATE_WIN)
-                        || (mMode == STATE_LEVEL_FAILED)
-                        || (mMode == STATE_GAME_OVER))
+                        || (mMode == STATE_LEVEL_FAILED))
                 {
-                    int event = EVENT_GAME_OVER;
+                    int event = EVENT_LEVEL_FAILED;
 
-                    switch (mMode)
+                    if( mMode == STATE_WIN )
                     {
-                        case STATE_WIN:
                             event = EVENT_LEVEL_DONE;
-                            break;
-                        case STATE_LEVEL_FAILED:
-                            event = EVENT_LEVEL_FAILED;
-                            break;
                     }
+
 
                     Message msg = mHandler.obtainMessage();
                     Bundle b = new Bundle();
@@ -644,17 +589,13 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback
             if (mInside)
             {
                 canvas.drawCircle(mCanvasWidth / 2, mCanvasHeight / 2, mRadius, mInsidePaint);
-                canvas.drawText("" + (SLOWIT_DURATION - mTimeInside), mCanvasWidth / 2, 50, mInsideTextPaint);
+                canvas.drawText("" + (SLOWIT_DURATION - mTimeInside), mCanvasWidth / 2, mCanvasHeight / 2 + 15, mInsideTextPaint);
             } else
             {
                 canvas.drawCircle(mCanvasWidth / 2, mCanvasHeight / 2, mRadius, mOutsidePaint);
             }
 
-//            canvas.drawText(res.getString(R.string.label_remaining_time, mLevelDuration - mTimeLevel), 5, mCanvasHeight - 5, mTimeTextPaint);
-//            canvas.drawText(res.getString(R.string.label_level, mLevel, mLife ), mCanvasWidth / 2, mCanvasHeight - 5, mLevelTextPaint);
-//            canvas.drawText(res.getString(R.string.label_score, mScore), mCanvasWidth - 5, mCanvasHeight - 5, mScoreTextPaint);
-
-            canvas.drawText(res.getString(R.string.label_remaining_time, mLevelDuration - mTimeLevel), mCanvasWidth / 2, mCanvasHeight - 5, mLevelTextPaint);
+            canvas.drawText(res.getString(R.string.label_remaining_time, mLevelDuration - mTimeLevel), mCanvasWidth / 2, mCanvasHeight - 5, mTimeTextPaint);
             if (mBalls != null)
             {
                 mBalls.draw(canvas);
@@ -706,19 +647,8 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback
 
         void levelFailed()
         {
-            if (mLife > 0)
-            {
-                setState(STATE_LEVEL_FAILED);
-                mLife--;
-                mLevel--;
-            }
-            else
-            {
-                setState(STATE_GAME_OVER);
-                mLevel = 0;
-                mScore = 0;
-                mLife = LIFE_COUNT;
-            }
+            mScore = 0;
+            setState(EVENT_LEVEL_FAILED);
         }
     }
 }

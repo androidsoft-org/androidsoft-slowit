@@ -20,7 +20,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.GridView;
-import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -114,24 +113,26 @@ public abstract class LevelSelectorActivity extends Activity implements LevelCli
         Log.d(LevelSelectorActivity.class.getName(), "onActivityResult");
         super.onActivityResult(requestCode, resultCode, intent);
 
-        Bundle extras = intent.getExtras();
-        if (extras != null)
+        if (intent != null)
         {
-            int level = extras.getInt(Level.KEY_LEVEL);
-            int score = extras.getInt(Level.KEY_SCORE);
-            int status = extras.getInt(Level.KEY_STATUS);
-            int grid = extras.getInt(Level.KEY_GRID);
-
-            Toast.makeText(this, "Level : " + level + " - Score : " + score, Toast.LENGTH_LONG).show();
-            List<Level> listGridLevels = mLevels.get(grid);
-            Level l = listGridLevels.get(level - 1);
-            if (score > 0)
+            Bundle extras = intent.getExtras();
+            if (extras != null)
             {
-                l.updateStatus(status);
-                l.updateScore(score);
-                updateLevel( grid, level , l.getStatus() , l.getScore() );
-                unlockNextLevel(level, grid, listGridLevels);
-                update();
+                int level = extras.getInt(Level.KEY_LEVEL);
+                int score = extras.getInt(Level.KEY_SCORE);
+                int status = extras.getInt(Level.KEY_STATUS);
+                int grid = extras.getInt(Level.KEY_GRID);
+
+                List<Level> listGridLevels = mLevels.get(grid);
+                Level l = listGridLevels.get(level - 1);
+                if (score > 0)
+                {
+                    l.updateStatus(status);
+                    l.updateScore(score);
+                    updateLevel(grid, level, l.getStatus(), l.getScore());
+                    unlockNextLevel(level, grid, listGridLevels);
+                    update();
+                }
             }
         }
     }
@@ -157,7 +158,7 @@ public abstract class LevelSelectorActivity extends Activity implements LevelCli
         if (lNext != null)
         {
             lNext.unlock();
-            updateLevel( grid, lNext.getLevel() , lNext.getStatus() , lNext.getScore() );
+            updateLevel(grid, lNext.getLevel(), lNext.getStatus(), lNext.getScore());
         }
     }
 
@@ -252,7 +253,7 @@ public abstract class LevelSelectorActivity extends Activity implements LevelCli
 
     private void updateLevel(int grid, int level, int status, int score)
     {
-        Log.d( LevelSelectorActivity.class.getName() , "updateLevel " + grid + " " + level + " " + status + " " + score );
+        Log.d(LevelSelectorActivity.class.getName(), "updateLevel " + grid + " " + level + " " + status + " " + score);
         SharedPreferences.Editor editor = getPreferences(0).edit();
         editor.putInt(getPrefKey(KEY_STATUS, grid, level), status);
         editor.putInt(getPrefKey(KEY_SCORE, grid, level), score);

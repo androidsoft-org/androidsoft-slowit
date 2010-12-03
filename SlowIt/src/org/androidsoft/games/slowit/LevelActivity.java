@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.HorizontalScrollView;
+import android.widget.ScrollView;
 import org.androidsoft.games.utils.level.LevelSelectorActivity;
 
 /**
@@ -47,10 +48,10 @@ public class LevelActivity extends LevelSelectorActivity
 
         super.onCreate( icicle );
 
-/*
-        HorizontalScrollView hsv = (HorizontalScrollView) findViewById(R.id.level_scrollview);
-        hsv.setHorizontalScrollBarEnabled(false);
-*/   }
+
+        ScrollView hsv = (ScrollView) findViewById(R.id.level_scrollview);
+        hsv.setVerticalScrollBarEnabled(false);
+   }
 
 
     public int[] getResButtons()
