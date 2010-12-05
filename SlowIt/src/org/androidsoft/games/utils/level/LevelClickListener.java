@@ -22,7 +22,7 @@ import java.util.List;
 
 /**
  *
- * @author pierre
+ * @author Pierre Levy
  */
 public class LevelClickListener implements OnItemClickListener
 {

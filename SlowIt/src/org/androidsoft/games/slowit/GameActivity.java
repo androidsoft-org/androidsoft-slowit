@@ -25,7 +25,7 @@ import org.androidsoft.games.utils.level.LevelManager;
 
 /**
  *
- * @author pierre
+ * @author Pierre Levy
  */
 public class GameActivity extends Activity
 {

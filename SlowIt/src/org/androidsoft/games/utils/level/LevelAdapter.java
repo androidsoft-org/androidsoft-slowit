@@ -24,7 +24,7 @@ import java.util.List;
 
 /**
  *
- * @author pierre
+ * @author Pierre Levy
  */
 public class LevelAdapter extends BaseAdapter
 {

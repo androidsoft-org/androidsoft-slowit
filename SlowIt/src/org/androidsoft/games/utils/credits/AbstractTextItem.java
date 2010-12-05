@@ -12,41 +12,54 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.androidsoft.games.slowit;
+
+package org.androidsoft.games.utils.credits;
+
+import android.graphics.Canvas;
+import android.graphics.Paint;
 
 /**
  *
  * @author Pierre Levy
  */
-public class Ball {
+public abstract class AbstractTextItem implements CreditsItem
+{
+    protected String mText;
+    protected int mX;
+    protected int mY;
 
-    double mX;
-    double mY;
-    double mDX;
-    double mDY;
-    int mIndex;
+    abstract Paint getPaint();
 
-    static int width;
-    static int height;
-
-    Ball( double x , double y, double dx , double dy, int index )
+    /**
+     * {@inheritDoc }
+     */
+    public void prepare( long elapsed , int width , int height , int dy )
     {
-        mX = x;
-        mY = y;
-        mDX = dx;
-        mDY = dy;
-        mIndex = index;
+        mY += dy;
+        mX = width / 2;
     }
 
-    double getDistance(double x, double y)
+    /**
+     * {@inheritDoc }
+     */
+    public void draw(Canvas canvas)
     {
-        return Math.sqrt( Math.pow( mX - x , 2.0 ) + Math.pow(mY - y , 2.0 ));
+        canvas.drawText( mText , mX, mY, getPaint() );
     }
 
-    void setVelocity(float dx, float dy)
+    /**
+     * {@inheritDoc }
+     */
+    public void setOffset( int offset )
     {
-        mDX = mDX + dx;
-        mDY = mDY + dy;
+        mY = offset;
     }
 
+    /**
+     * {@inheritDoc }
+     */
+    public int getOffset()
+    {
+        return mY;
+    }
 }

@@ -14,19 +14,23 @@
  */
 package org.androidsoft.games.slowit;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.HorizontalScrollView;
 import android.widget.ScrollView;
 import org.androidsoft.games.utils.level.LevelSelectorActivity;
 
 /**
  *
- * @author pierre
+ * @author Pierre Levy
  */
 public class LevelActivity extends LevelSelectorActivity
 {
+
     private static final int LEVEL_COUNT = 9;
     private int[] buttons =
     {
@@ -36,8 +40,10 @@ public class LevelActivity extends LevelSelectorActivity
         R.drawable.button_2stars,
         R.drawable.button_3stars
     };
-
-    private int[] grids = { R.id.level_grid1 , R.id.level_grid2 };
+    private int[] grids =
+    {
+        R.id.level_grid1, R.id.level_grid2
+    };
 
     @Override
     public void onCreate(Bundle icicle)
@@ -46,13 +52,12 @@ public class LevelActivity extends LevelSelectorActivity
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        super.onCreate( icicle );
+        super.onCreate(icicle);
 
 
         ScrollView hsv = (ScrollView) findViewById(R.id.level_scrollview);
         hsv.setVerticalScrollBarEnabled(false);
-   }
-
+    }
 
     public int[] getResButtons()
     {
@@ -81,5 +86,33 @@ public class LevelActivity extends LevelSelectorActivity
     public Class<?> getGameActivity()
     {
         return GameActivity.class;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        // Handle item selection
+        switch (item.getItemId())
+        {
+            case R.id.credits_menu:
+                credits();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void credits()
+    {
+        Intent intent = new Intent( this , CreditsActivity.class );
+        startActivity(intent);
     }
 }

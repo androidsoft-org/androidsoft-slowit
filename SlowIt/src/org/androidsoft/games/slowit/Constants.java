@@ -17,9 +17,9 @@ package org.androidsoft.games.slowit;
 
 /**
  *
- * @author pierre
+ * @author Pierre Levy
  */
 public class Constants
 {
-    final static int VERSION = 4;
+    final static int VERSION = 6;
 }

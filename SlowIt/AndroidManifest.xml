@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          android:versionCode="4"
-          android:versionName="1.1"
+          android:versionCode="6"
+          android:versionName="1.1.2 "
           android:installLocation="auto"
           package="org.androidsoft.games.slowit">
     <uses-sdk android:minSdkVersion="3" />
@@ -20,7 +20,7 @@
                   android:label="@string/activity_title">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LEVELS"/>
             </intent-filter>
         </activity>
         <activity android:name=".GameActivity"
@@ -28,7 +28,15 @@
                   android:label="@string/activity_title">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.GAME"/>
+            </intent-filter>
+        </activity>
+        <activity android:name=".CreditsActivity"
+                  android:screenOrientation="nosensor"
+                  android:label="@string/activity_title">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.CREDITS"/>
             </intent-filter>
         </activity>
     </application>

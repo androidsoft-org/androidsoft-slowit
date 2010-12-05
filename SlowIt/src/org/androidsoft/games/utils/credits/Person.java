@@ -12,41 +12,49 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.androidsoft.games.slowit;
+
+package org.androidsoft.games.utils.credits;
+
+import android.graphics.Paint;
 
 /**
  *
  * @author Pierre Levy
  */
-public class Ball {
+public class Person extends AbstractTextItem implements CreditsItem
+{
+    private static Paint mPaint;
+    private static int mBeforeSpacing;
+    private static int mAfterSpacing;
 
-    double mX;
-    double mY;
-    double mDX;
-    double mDY;
-    int mIndex;
-
-    static int width;
-    static int height;
-
-    Ball( double x , double y, double dx , double dy, int index )
+    public Person( String name )
     {
-        mX = x;
-        mY = y;
-        mDX = dx;
-        mDY = dy;
-        mIndex = index;
+        mText = name;
     }
 
-    double getDistance(double x, double y)
+    public static void setPaint( Paint paint )
     {
-        return Math.sqrt( Math.pow( mX - x , 2.0 ) + Math.pow(mY - y , 2.0 ));
+        mPaint = paint;
     }
 
-    void setVelocity(float dx, float dy)
+    public Paint getPaint()
     {
-        mDX = mDX + dx;
-        mDY = mDY + dy;
+        return mPaint;
     }
 
+    public static void setSpacings( int before , int after )
+    {
+        mBeforeSpacing = before;
+        mAfterSpacing = after;
+    }
+
+    public int getBeforeSpacing()
+    {
+        return mBeforeSpacing;
+    }
+
+    public int getAfterSpacing()
+    {
+        return mAfterSpacing;
+    }
 }

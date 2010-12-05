@@ -21,7 +21,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author pierre
+ * @author Pierre Levy
  */
 public class BallList extends ArrayList<Ball>
 {

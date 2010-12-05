@@ -25,7 +25,7 @@ import java.util.List;
 
 /**
  *
- * @author pierre
+ * @author Pierre Levy
  */
 public abstract class LevelSelectorActivity extends Activity implements LevelClickListener.OnLevelClickedListener
 {

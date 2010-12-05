@@ -36,7 +36,7 @@ import org.androidsoft.games.utils.level.LevelManager;
 
 /**
  *
- * @author pierre
+ * @author Pierre Levy
  */
 class GameView extends SurfaceView implements SurfaceHolder.Callback
 {
@@ -290,7 +290,6 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback
         public static final int STATE_GAME_OVER = 6;
         private static final int LEVEL_DURATION = 40;
         private static final int SLOWIT_DURATION = 10;
-        private static final int LIFE_COUNT = 2;
         // drawing variables
         private final SurfaceHolder mSurfaceHolder;
         private final Handler mHandler;
@@ -365,10 +364,10 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback
                 mTimeInside = -1;
                 mLevel = mLevelManager.getLevel() + 10 * mLevelManager.getGrid();
                 int nBallCount = 1 + (mLevel / 7);
-                mRadius = 50 - 5 * (mLevel % 7) + nBallCount * 5;
+                mRadius = 50 - 5 * (mLevel % 7) + nBallCount * 10;
                 int nInitialVelocity = 5 * (mLevel % 7);
                 mBalls = new BallList(mCanvasWidth, mCanvasHeight, nBallCount, nInitialVelocity);
-                mLevelDuration = LEVEL_DURATION + 10 * nBallCount;
+                mLevelDuration = LEVEL_DURATION + 20 * nBallCount;
             }
         }
 
@@ -539,8 +538,7 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback
                 Log.d("GameView", "setState:" + mode);
                 mMode = mode;
 
-                if ((mMode == STATE_WIN)
-                        || (mMode == STATE_LEVEL_FAILED))
+                if ((mMode == STATE_WIN) || (mMode == STATE_LEVEL_FAILED))
                 {
                     int event = EVENT_LEVEL_FAILED;
 
@@ -577,10 +575,6 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback
             }
         }
 
-        /**
-         * Draws the ship, fuel/speed bars, and background to the provided
-         * Canvas.
-         */
         private void doDraw(Canvas canvas)
         {
             Resources res = mContext.getResources();
@@ -648,7 +642,7 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback
         void levelFailed()
         {
             mScore = 0;
-            setState(EVENT_LEVEL_FAILED);
+            setState( STATE_LEVEL_FAILED);
         }
     }
 }

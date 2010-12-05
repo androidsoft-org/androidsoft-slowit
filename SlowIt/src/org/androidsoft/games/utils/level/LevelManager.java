@@ -20,7 +20,7 @@ import android.os.Bundle;
 
 /**
  *
- * @author pierre
+ * @author Pierre Levy
  */
 public class LevelManager
 {

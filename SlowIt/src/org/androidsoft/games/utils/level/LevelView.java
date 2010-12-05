@@ -22,7 +22,7 @@ import android.widget.ImageView;
 
 /**
  *
- * @author pierre
+ * @author Pierre Levy
  */
 public class LevelView extends ImageView
 {
