@@ -27,14 +27,15 @@ public final class R {
         public static final int splash=0x7f02000a;
     }
     public static final class id {
-        public static final int button_play=0x7f080006;
-        public static final int credits_menu=0x7f080007;
-        public static final int image_splash=0x7f080004;
+        public static final int button_play=0x7f080007;
+        public static final int credits_menu=0x7f080008;
+        public static final int image_splash=0x7f080005;
         public static final int level_grid1=0x7f080001;
         public static final int level_grid2=0x7f080002;
+        public static final int level_grid3=0x7f080003;
         public static final int level_scrollview=0x7f080000;
-        public static final int splash=0x7f080003;
-        public static final int text=0x7f080005;
+        public static final int splash=0x7f080004;
+        public static final int text=0x7f080006;
     }
     public static final class layout {
         public static final int level_selector=0x7f030000;
@@ -55,6 +56,9 @@ public final class R {
         /**  What's new dialog 
          */
         public static final int first_run_dialog_title=0x7f050007;
+        public static final int grid1_title=0x7f050019;
+        public static final int grid2_title=0x7f05001a;
+        public static final int grid3_title=0x7f05001b;
         public static final int label_level=0x7f050014;
         public static final int label_remaining_time=0x7f050013;
         public static final int label_score=0x7f050015;

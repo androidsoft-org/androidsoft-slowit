@@ -192,7 +192,7 @@ public abstract class LevelSelectorActivity extends Activity implements LevelCli
 
         SharedPreferences prefs = getPreferences(0);
         int gridcount = prefs.getInt(KEY_GRID_COUNT, 0);
-        if (gridcount == 0)
+        if( (gridcount == 0)  || (gridcount != (getGrids().length) ))
         {
             initGrids();
         } else

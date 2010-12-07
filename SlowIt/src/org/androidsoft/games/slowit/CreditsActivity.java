@@ -58,13 +58,13 @@ public class CreditsActivity  extends Activity
         p.setBitmapBackgroundLandscapeRes( R.drawable.background );
         p.setArrayCreditsRes(R.array.credits);
 
-        p.setColorDefault( 0xFF009000);
-        p.setTextSizeDefault( 24 );
+        p.setColorDefault( 0x5500FF00);
+        p.setTextSizeDefault( 40 );
         p.setTypefaceDefault(Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD));
         p.setSpacingBeforeDefault( 10 );
         p.setSpacingAfterDefault( 15 );
 
-        p.setColorCategory( 0xFF00AA00);
+        p.setColorCategory( 0xFF00FF00);
         p.setTextSizeCategory( 14 );
         p.setTypefaceCategory(Typeface.create(Typeface.SANS_SERIF, Typeface.ITALIC));
         p.setSpacingBeforeCategory( 10 );

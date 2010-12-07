@@ -42,7 +42,7 @@ public class LevelActivity extends LevelSelectorActivity
     };
     private int[] grids =
     {
-        R.id.level_grid1, R.id.level_grid2
+        R.id.level_grid1, R.id.level_grid2, R.id.level_grid3
     };
 
     @Override

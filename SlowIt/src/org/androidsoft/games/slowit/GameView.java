@@ -73,7 +73,7 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback
             public void handleMessage(Message m)
             {
                 int event = m.getData().getInt(MSG_DATA_EVENT);
-                int level = m.getData().getInt(MSG_DATA_LEVEL);
+                int level = mLevelManager.getLevel();
                 int score = m.getData().getInt(MSG_DATA_SCORE);
                 switch (event)
                 {
