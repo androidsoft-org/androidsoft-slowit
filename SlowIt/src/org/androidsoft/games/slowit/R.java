@@ -49,19 +49,17 @@ public final class R {
         public static final int app_name=0x7f050000;
         public static final int button_continue=0x7f050002;
         public static final int button_play=0x7f050004;
-        public static final int credits_app_name=0x7f050017;
-        public static final int credits_current_version=0x7f050018;
-        public static final int credits_menu=0x7f050016;
+        public static final int credits_app_name=0x7f050015;
+        public static final int credits_current_version=0x7f050016;
+        public static final int credits_menu=0x7f050014;
         public static final int first_run_dialog_message=0x7f050008;
         /**  What's new dialog 
          */
         public static final int first_run_dialog_title=0x7f050007;
-        public static final int grid1_title=0x7f050019;
-        public static final int grid2_title=0x7f05001a;
-        public static final int grid3_title=0x7f05001b;
-        public static final int label_level=0x7f050014;
+        public static final int grid1_title=0x7f050017;
+        public static final int grid2_title=0x7f050018;
+        public static final int grid3_title=0x7f050019;
         public static final int label_remaining_time=0x7f050013;
-        public static final int label_score=0x7f050015;
         public static final int message_hiscore=0x7f050012;
         public static final int message_level_done=0x7f05000c;
         public static final int message_level_failed=0x7f05000f;

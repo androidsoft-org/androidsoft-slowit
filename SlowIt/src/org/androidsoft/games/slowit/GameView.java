@@ -32,6 +32,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import java.text.MessageFormat;
 import org.androidsoft.games.utils.level.LevelManager;
 
 /**
@@ -107,7 +108,8 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback
     {
         Resources res = mContext.getResources();
         String title = res.getString(R.string.title_level_done);
-        String message = res.getString(R.string.message_level_done, level , score);
+        Object[] args = { level , score };
+        String message = MessageFormat.format( res.getString(R.string.message_level_done) , args );
         String button = res.getString(R.string.next_level);
         int icon = R.drawable.icon_level_done;
         mScore = score;
@@ -123,7 +125,7 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback
         if ( score > mLevelManager.getHiScore())
         {
             title = res.getString(R.string.title_hiscore);
-            message = res.getString(R.string.message_hiscore, level, score);
+            message = MessageFormat.format( res.getString(R.string.message_hiscore ) , args );
             button = res.getString(R.string.button_continue);
             icon = R.drawable.icon_hiscore;
             showLevelDialog(title, message, icon, button);
