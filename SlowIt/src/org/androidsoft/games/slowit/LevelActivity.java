@@ -1,4 +1,4 @@
-/* Copyright (c) 2010 Pierre LEVY androidsoft.org
+/* Copyright (c) 2010-2011 Pierre LEVY androidsoft.org
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -19,8 +19,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.Window;
-import android.view.WindowManager;
+import android.view.View;
+import android.widget.HorizontalScrollView;
 import android.widget.ScrollView;
 import org.androidsoft.games.utils.level.LevelSelectorActivity;
 
@@ -48,15 +48,19 @@ public class LevelActivity extends LevelSelectorActivity
     @Override
     public void onCreate(Bundle icicle)
     {
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
         super.onCreate(icicle);
 
 
-        ScrollView hsv = (ScrollView) findViewById(R.id.level_scrollview);
-        hsv.setVerticalScrollBarEnabled(false);
+        View sv = findViewById(R.id.level_scrollview);
+        if( sv instanceof ScrollView )
+        {
+            ((ScrollView) sv).setVerticalScrollBarEnabled(false);
+        } else if ( sv instanceof HorizontalScrollView )
+        {
+            ((HorizontalScrollView) sv).setHorizontalScrollBarEnabled(false);
+            
+        }
+        
     }
 
     public int[] getResButtons()

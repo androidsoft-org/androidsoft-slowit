@@ -1,4 +1,4 @@
-/* Copyright (c) 2010 Pierre LEVY androidsoft.org
+/* Copyright (c) 2010-2011 Pierre LEVY androidsoft.org
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -54,8 +54,8 @@ public class CreditsActivity  extends Activity
         CreditsParams p = new CreditsParams();
         p.setAppNameRes( R.string.credits_app_name );
         p.setAppVersionRes( R.string.credits_current_version );
-        p.setBitmapBackgroundRes( R.drawable.background );
-        p.setBitmapBackgroundLandscapeRes( R.drawable.background );
+        p.setBitmapBackgroundRes( R.drawable.about_background );
+        p.setBitmapBackgroundLandscapeRes( R.drawable.about_background );
         p.setArrayCreditsRes(R.array.credits);
 
         p.setColorDefault( 0x5500FF00);
