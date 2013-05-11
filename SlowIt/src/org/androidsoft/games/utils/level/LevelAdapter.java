@@ -15,6 +15,7 @@
 package org.androidsoft.games.utils.level;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -31,13 +32,14 @@ public class LevelAdapter extends BaseAdapter
 
     private Context mContext;
     private List<Level> mLevels;
-    private int[] mButtons;
+    Graphics mGraphics;
 
-    public LevelAdapter(Context c, List<Level> levels , int[] buttons )
+
+    public LevelAdapter(Context c, List<Level> levels , Graphics graphics )
     {
         mContext = c;
         mLevels = levels;
-        mButtons = buttons;
+        mGraphics = graphics;
     }
 
     public int getCount()
@@ -59,10 +61,13 @@ public class LevelAdapter extends BaseAdapter
     {
         LevelView imageView;
         Level level = mLevels.get(position);
+        int width = parent.getWidth();
+//        Log.d( "androidsoft.org" , "View width" +  parent.getWidth());
+//        mGraphics.setViewWidth(width);
         if (convertView == null)
         {
-            imageView = new LevelView(mContext, level);
-            imageView.setLayoutParams(new GridView.LayoutParams(70, 70));
+            imageView = new LevelView(mContext, level , mGraphics );
+            imageView.setLayoutParams(new GridView.LayoutParams( mGraphics.getButtonWidth(), mGraphics.getButtonWidth() ));
             imageView.setAdjustViewBounds(false);
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             imageView.setPadding(5, 5, 5, 5);
@@ -71,9 +76,7 @@ public class LevelAdapter extends BaseAdapter
             imageView = (LevelView) convertView;
         }
 
-        int button = mButtons[level.getStatus() + 1];
-        imageView.setImageResource(button);
+        imageView.setImageResource( mGraphics.getButtonShapeResId( level.getGrid()) );
         return imageView;
-//        return new LevelView( mContext );
     }
 }

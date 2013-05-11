@@ -23,8 +23,8 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
-import org.androidsoft.games.utils.credits.CreditsParams;
-import org.androidsoft.games.utils.credits.CreditsView;
+import org.androidsoft.utils.credits.CreditsParams;
+import org.androidsoft.utils.credits.CreditsView;
 
 /**
  *

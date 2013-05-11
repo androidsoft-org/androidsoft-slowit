@@ -19,9 +19,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.HorizontalScrollView;
-import android.widget.ScrollView;
 import org.androidsoft.games.utils.level.LevelSelectorActivity;
 
 /**
@@ -31,61 +28,14 @@ import org.androidsoft.games.utils.level.LevelSelectorActivity;
 public class LevelActivity extends LevelSelectorActivity
 {
 
-    private static final int LEVEL_COUNT = 9;
-    private int[] buttons =
-    {
-        R.drawable.button_locked,
-        R.drawable.button_new,
-        R.drawable.button_1star,
-        R.drawable.button_2stars,
-        R.drawable.button_3stars
-    };
-    private int[] grids =
-    {
-        R.id.level_grid1, R.id.level_grid2, R.id.level_grid3
-    };
-
     @Override
     public void onCreate(Bundle icicle)
     {
         super.onCreate(icicle);
-
-
-        View sv = findViewById(R.id.level_scrollview);
-        if( sv instanceof ScrollView )
-        {
-            ((ScrollView) sv).setVerticalScrollBarEnabled(false);
-        } else if ( sv instanceof HorizontalScrollView )
-        {
-            ((HorizontalScrollView) sv).setHorizontalScrollBarEnabled(false);
-            
-        }
         
     }
 
-    public int[] getResButtons()
-    {
-        return buttons;
-    }
-
-    @Override
-    public int[] getGrids()
-    {
-        return grids;
-    }
-
-    @Override
-    public int getLayout()
-    {
-        return R.layout.level_selector;
-    }
-
-    @Override
-    public int getLevelPerGrid()
-    {
-        return LEVEL_COUNT;
-    }
-
+ 
     @Override
     public Class<?> getGameActivity()
     {

@@ -30,12 +30,6 @@ public class LevelClickListener implements OnItemClickListener
     private List<Level> mLevels;
     private OnLevelClickedListener mListener;
 
-
-    public interface OnLevelClickedListener
-    {
-        void onLevelClicked( Level level );
-    }
-
     public LevelClickListener( Context context , List<Level> levels , OnLevelClickedListener listener )
     {
         mContext = context;

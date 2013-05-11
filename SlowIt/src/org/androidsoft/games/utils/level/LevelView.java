@@ -15,6 +15,7 @@
 package org.androidsoft.games.utils.level;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Typeface;
@@ -29,11 +30,13 @@ public class LevelView extends ImageView
 
     Level mLevel;
     int mStatus;
+    Graphics mGraphics;
 
-    public LevelView(Context context, Level level)
+    public LevelView(Context context, Level level, Graphics graphics)
     {
         super(context);
         mLevel = level;
+        mGraphics = graphics;
     }
 
     @Override
@@ -41,17 +44,50 @@ public class LevelView extends ImageView
     {
         super.onDraw(canvas);
 
+        int width = mGraphics.getButtonWidth();
+        
         if (mLevel.getStatus() != Level.LOCKED)
         {
             canvas.save();
             Paint paint = new Paint();
             paint.setAntiAlias(true);
-            paint.setARGB(120, 100, 255, 100);
+            paint.setARGB(255, 255, 255, 255);
             paint.setTextAlign(Paint.Align.CENTER);
-            paint.setTextSize(20);
+            paint.setTextSize( width / 3 );
             paint.setTypeface(Typeface.DEFAULT_BOLD);
-            canvas.drawText("" + mLevel.getLevel(), 70 / 2, 30, paint);
+            canvas.drawText("" + mLevel.getLevel(), width / 2, width / 2, paint);
+            
+            Bitmap bitmapScore = null;
+            if( mLevel.getStatus() == Level.DONE_1STAR )
+            {
+                bitmapScore = mGraphics.getBitmap1star();
+            } 
+            else if( mLevel.getStatus() == Level.DONE_2STAR )
+            {
+                bitmapScore = mGraphics.getBitmap2stars();
+            } 
+            else if( mLevel.getStatus() == Level.DONE_3STAR )
+            {
+                bitmapScore = mGraphics.getBitmap3stars();
+            } 
+            if( bitmapScore != null )
+            {
+                canvas.drawBitmap( bitmapScore , ( width - bitmapScore.getWidth()) / 2 , width / 2 , paint);
+            }
+            
             canvas.restore();
+        }
+        else
+        {
+            canvas.save();
+            Paint paint = new Paint();
+            paint.setAntiAlias(true);
+            paint.setFilterBitmap(true);
+            paint.setDither(true);
+            Bitmap bitmapLock = mGraphics.getBitmapLock();
+            canvas.drawBitmap( bitmapLock , ( width - bitmapLock.getWidth()) / 2 , ( width - bitmapLock.getHeight()) / 2, paint);
+            canvas.restore();
+            
         }
     }
 }
