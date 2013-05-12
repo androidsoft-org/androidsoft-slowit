@@ -40,10 +40,6 @@ public class CreditsActivity  extends Activity
     {
         super.onCreate(icicle);
 
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
         View view = new CreditsView( this , getCreditsParams() );
         setContentView( view );
 
@@ -58,17 +54,17 @@ public class CreditsActivity  extends Activity
         p.setBitmapBackgroundLandscapeRes( R.drawable.about_background );
         p.setArrayCreditsRes(R.array.credits);
 
-        p.setColorDefault( 0x5500FF00);
-        p.setTextSizeDefault( 40 );
+        p.setColorDefault( 0xFFFFFFFF);
+        p.setTextSizeDefault( 70 );
         p.setTypefaceDefault(Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD));
-        p.setSpacingBeforeDefault( 10 );
-        p.setSpacingAfterDefault( 15 );
+        p.setSpacingBeforeDefault( 20 );
+        p.setSpacingAfterDefault( 30 );
 
-        p.setColorCategory( 0xFF00FF00);
-        p.setTextSizeCategory( 14 );
+        p.setColorCategory( 0xFFFFFFFF);
+        p.setTextSizeCategory( 35 );
         p.setTypefaceCategory(Typeface.create(Typeface.SANS_SERIF, Typeface.ITALIC));
-        p.setSpacingBeforeCategory( 10 );
-        p.setSpacingAfterCategory( 10 );
+        p.setSpacingBeforeCategory( 20 );
+        p.setSpacingAfterCategory( 20 );
 
         return p;
 

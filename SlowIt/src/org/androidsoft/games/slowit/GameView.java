@@ -330,23 +330,25 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback
 
             mInsideTextPaint = new Paint();
             mInsideTextPaint.setAntiAlias(true);
-            mInsideTextPaint.setARGB(255, 0, 255, 0);
-            mInsideTextPaint.setTextSize(36);
+            mInsideTextPaint.setARGB(255, 255, 255, 255);
+            mInsideTextPaint.setTextSize(40);
             mInsideTextPaint.setTypeface(Typeface.DEFAULT_BOLD);
             mInsideTextPaint.setTextAlign(Paint.Align.CENTER);
 
 
             mTimeTextPaint = new Paint();
             mTimeTextPaint.setAntiAlias(true);
-            mTimeTextPaint.setARGB(200, 255, 255, 255);
+            mTimeTextPaint.setARGB(100, 255, 255, 255);
+            mTimeTextPaint.setTextSize(100);
+            mTimeTextPaint.setTypeface(Typeface.DEFAULT_BOLD);
             mTimeTextPaint.setTextAlign(Paint.Align.CENTER);
 
             mOutsidePaint = new Paint();
             mOutsidePaint.setAntiAlias(true);
-            mOutsidePaint.setARGB(30, 0, 0, 0);
+            mOutsidePaint.setARGB(100, 0, 0, 0);
             mInsidePaint = new Paint();
             mInsidePaint.setAntiAlias(true);
-            mInsidePaint.setARGB(30, 200, 255, 200);
+            mInsidePaint.setARGB(100, 255, 255, 255);
 
             BallList.setBallImage(res.getDrawable(R.drawable.ball));
             Log.d("GameView", "GameThread constructor");
@@ -599,7 +601,7 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback
                 canvas.drawCircle(mCanvasWidth / 2, mCanvasHeight / 2, mRadius, mOutsidePaint);
             }
 
-            canvas.drawText(res.getString(R.string.label_remaining_time, mLevelDuration - mTimeLevel), mCanvasWidth / 2, mCanvasHeight - 5, mTimeTextPaint);
+            canvas.drawText(res.getString(R.string.label_remaining_time, mLevelDuration - mTimeLevel), mCanvasWidth / 2, mCanvasHeight - 50, mTimeTextPaint);
             if (mBalls != null)
             {
                 mBalls.draw(canvas);

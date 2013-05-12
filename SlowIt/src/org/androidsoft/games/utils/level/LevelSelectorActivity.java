@@ -14,8 +14,6 @@
  */
 package org.androidsoft.games.utils.level;
 
-import android.app.Activity;
-import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -23,16 +21,18 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.support.v13.app.FragmentPagerAdapter;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.Window;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import org.androidsoft.games.slowit.R;
 
-public abstract class LevelSelectorActivity extends Activity implements OnLevelClickedListener
+public abstract class LevelSelectorActivity extends FragmentActivity implements OnLevelClickedListener
 {
 
     private static final String KEY_GRID_COUNT = "GRID_COUNT";
@@ -59,7 +59,16 @@ public abstract class LevelSelectorActivity extends Activity implements OnLevelC
         R.color.dark_orange,
         R.color.dark_red
     };
+    static int[] sLightColorsId =
+    {
+        R.color.light_blue,
+        R.color.light_violet,
+        R.color.light_green,
+        R.color.light_orange,
+        R.color.light_red
+    };
     static int[] sColors = new int[NUM_COLORS];
+    static int[] sLightColors = new int[NUM_COLORS];
     static int[] sDarkColors = new int[NUM_COLORS];
     static int[] sButtonShape =
     {
@@ -69,6 +78,17 @@ public abstract class LevelSelectorActivity extends Activity implements OnLevelC
         R.drawable.button_orange,
         R.drawable.button_red,
     };
+    
+    static int[] sGridTitlesId = {
+        R.string.grid1_title,
+        R.string.grid2_title,
+        R.string.grid3_title,
+        R.string.grid4_title,
+        R.string.grid5_title
+    };
+    
+    static String[] sGridTitles = new String[ NUM_GRIDS ];
+            
     MyAdapter mAdapter;
     ViewPager mPager;
     static List<List<Level>> mLevels;
@@ -84,17 +104,13 @@ public abstract class LevelSelectorActivity extends Activity implements OnLevelC
     {
         super.onCreate(savedInstanceState);
 
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-
         setContentView(R.layout.grid_pager);
 
         Resources res = getResources();
-        initColors(res, sColorsId, sColors);
-        initColors(res, sDarkColorsId, sDarkColors);
         initGraphics(res);
         initGrids();
 
-        mAdapter = new MyAdapter(getFragmentManager());
+        mAdapter = new MyAdapter( this.getSupportFragmentManager() );
         mPager = (ViewPager) findViewById(R.id.pager);
         mPager.setAdapter(mAdapter);
         mContext = getApplicationContext();
@@ -109,6 +125,14 @@ public abstract class LevelSelectorActivity extends Activity implements OnLevelC
         for (int i = 0; i < ids.length; i++)
         {
             colors[i] = res.getColor(ids[i]);
+        }
+    }
+
+    private void initLabels(Resources res, int[] ids, String[] labels)
+    {
+        for (int i = 0; i < ids.length; i++)
+        {
+            labels[i] = res.getString(ids[i]);
         }
     }
 
@@ -149,9 +173,17 @@ public abstract class LevelSelectorActivity extends Activity implements OnLevelC
         mGraphics.setBitmap2stars(BitmapFactory.decodeResource(res, R.drawable.star2));
         mGraphics.setBitmap3stars(BitmapFactory.decodeResource(res, R.drawable.star3));
         mGraphics.setButtonShapeResId(sButtonShape);
-        mGraphics.setLightColors(sColors);
+        
+        initColors(res, sColorsId, sColors);
+        initColors(res, sDarkColorsId, sDarkColors);
+        initColors(res, sLightColorsId, sLightColors);
+        mGraphics.setColors(sColors);
+        mGraphics.setLightColors(sLightColors);
         mGraphics.setDarkColors(sDarkColors);
         mGraphics.setViewWidth(600);
+        
+        initLabels(res, sGridTitlesId, sGridTitles);
+        mGraphics.setGridTitles(sGridTitles);
     }
 
     /////////////////////////////////////////////////////////////////////////////
@@ -310,7 +342,7 @@ public abstract class LevelSelectorActivity extends Activity implements OnLevelC
     public class MyAdapter extends FragmentPagerAdapter
     {
 
-        HashMap< Integer, LevelFragment> mMapFragment = new HashMap< Integer, LevelFragment>();
+        HashMap< Integer, Fragment> mMapFragment = new HashMap< Integer, Fragment>();
 
         public MyAdapter(FragmentManager fm)
         {
@@ -324,9 +356,9 @@ public abstract class LevelSelectorActivity extends Activity implements OnLevelC
         }
 
         @Override
-        public LevelFragment getItem(int position)
+        public Fragment getItem(int position)
         {
-            LevelFragment f = mMapFragment.get(position);
+            Fragment f = mMapFragment.get(position);
             if (f == null)
             {
                 f = LevelFragment.newInstance(position, mContext, mLevels, mGraphics, mListener);

@@ -44,11 +44,6 @@ public class SplashActivity extends Activity implements OnClickListener
     {
         super.onCreate(icicle);
 
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-
         setContentView(R.layout.splash);
 
         mButtonPlay = (Button) findViewById(R.id.button_play);

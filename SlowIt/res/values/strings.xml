@@ -29,11 +29,15 @@
     <string name="redo_level">"Continue"</string>
     <string name="title_hiscore">"New HiScore!"</string>
     <string name="message_hiscore">Congratulations!\n\nYou set the new hiscore for the level {0} to : {1} points</string>
-    <string name="label_remaining_time">"Time left : %ds"</string>
+    <string name="label_remaining_time">"%ds"</string>
     <string name="credits_menu">About</string>
     <string name="credits_app_name">Slow it!</string>
-    <string name="credits_current_version">Version 1.3.1</string>
+    <string name="credits_current_version">Version 2.0</string>
     <string name="grid1_title">Beginners</string>
     <string name="grid2_title">Intermediates</string>
     <string name="grid3_title">Experts</string>
+    <string name="grid4_title">Super Experts</string>
+    <string name="grid5_title">Aliens</string>
+    
+    
 </resources>
