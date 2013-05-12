@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <gradient
-        android:startColor="@color/blue"
+        android:startColor="@color/light_blue"
         android:endColor="@color/dark_blue"
         android:angle="270" />
     <stroke
-        android:width="@dimen/button_stroke"
+        android:width="0dp"
         android:color="@color/dark_blue" />
     <corners
         android:radius="0dp" />
