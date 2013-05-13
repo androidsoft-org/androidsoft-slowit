@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import org.androidsoft.games.slowit.R;
+import org.json.JSONException;
 
 public abstract class LevelSelectorActivity extends FragmentActivity implements OnLevelClickedListener
 {
@@ -40,6 +41,8 @@ public abstract class LevelSelectorActivity extends FragmentActivity implements 
     private static final String KEY_ID = "LEVEL_ID";
     private static final String KEY_STATUS = "LEVEL_STATUS";
     private static final String KEY_SCORE = "LEVEL_SCORE";
+    private static final String KEY_JSON = "JSON";
+    private static final String DEFAULT = "DEF_JSON";
     static final int NUM_GRIDS = 5;
     static final int NUM_COLORS = 5;
     static final int NUM_LEVEL_PER_GRID = 12;
@@ -78,17 +81,15 @@ public abstract class LevelSelectorActivity extends FragmentActivity implements 
         R.drawable.button_orange,
         R.drawable.button_red,
     };
-    
-    static int[] sGridTitlesId = {
+    static int[] sGridTitlesId =
+    {
         R.string.grid1_title,
         R.string.grid2_title,
         R.string.grid3_title,
         R.string.grid4_title,
         R.string.grid5_title
     };
-    
-    static String[] sGridTitles = new String[ NUM_GRIDS ];
-            
+    static String[] sGridTitles = new String[NUM_GRIDS];
     MyAdapter mAdapter;
     ViewPager mPager;
     static List<List<Level>> mLevels;
@@ -99,6 +100,10 @@ public abstract class LevelSelectorActivity extends FragmentActivity implements 
 
     public abstract Class<?> getGameActivity();
 
+    
+    ////////////////////////////////////////////////////////////////////////////
+    // Life circle events
+    
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -110,14 +115,79 @@ public abstract class LevelSelectorActivity extends FragmentActivity implements 
         initGraphics(res);
         initGrids();
 
-        mAdapter = new MyAdapter( this.getSupportFragmentManager() );
+        mAdapter = new MyAdapter(this.getSupportFragmentManager());
         mPager = (ViewPager) findViewById(R.id.pager);
         mPager.setAdapter(mAdapter);
         mContext = getApplicationContext();
         mListener = this;
 
+    }
 
+    /**
+     * {@inheritDoc }
+     */
+    @Override
+    protected void onPause()
+    {
+        Log.d(LevelSelectorActivity.class.getName(), "onPause");
+        super.onPause();
 
+        save();
+
+    }
+
+    /**
+     * {@inheritDoc }
+     */
+    @Override
+    protected void onResume()
+    {
+        Log.d(LevelSelectorActivity.class.getName(), "onResume");
+        super.onResume();
+
+        restore();
+
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Initializations
+    
+    private void initGrids()
+    {
+        mLevels = new ArrayList<List<Level>>();
+
+        for (int i = 0; i < NUM_GRIDS; i++)
+        {
+            List<Level> list = new ArrayList<Level>();
+            for (int j = 0; j < NUM_LEVEL_PER_GRID; j++)
+            {
+                int status = ((j == 0) && (i == 0)) ? 0 : -1;
+                list.add(new Level(i, j + 1, status, 0));
+
+            }
+            mLevels.add(list);
+        }
+    }
+
+    private void initGraphics(Resources res)
+    {
+        mGraphics = new Graphics();
+        mGraphics.setBitmapLock(BitmapFactory.decodeResource(res, R.drawable.lock));
+        mGraphics.setBitmap1star(BitmapFactory.decodeResource(res, R.drawable.star1));
+        mGraphics.setBitmap2stars(BitmapFactory.decodeResource(res, R.drawable.star2));
+        mGraphics.setBitmap3stars(BitmapFactory.decodeResource(res, R.drawable.star3));
+        mGraphics.setButtonShapeResId(sButtonShape);
+
+        initColors(res, sColorsId, sColors);
+        initColors(res, sDarkColorsId, sDarkColors);
+        initColors(res, sLightColorsId, sLightColors);
+        mGraphics.setColors(sColors);
+        mGraphics.setLightColors(sLightColors);
+        mGraphics.setDarkColors(sDarkColors);
+        mGraphics.setViewWidth(600);
+
+        initLabels(res, sGridTitlesId, sGridTitles);
+        mGraphics.setGridTitles(sGridTitles);
     }
 
     private void initColors(Resources res, int[] ids, int[] colors)
@@ -136,58 +206,11 @@ public abstract class LevelSelectorActivity extends FragmentActivity implements 
         }
     }
 
-    private static List<Level> getInitLevelList(int grid)
-    {
-        List<Level> list = new ArrayList<Level>();
-        for (int i = 0; i < getLevelPerGrid(); i++)
-        {
-            int status = ((i == 0) && (grid == 0)) ? 0 : -1;
-            list.add(new Level(grid, i + 1, status, 0));
-
-        }
-        return list;
-
-    }
-
-    private static int getLevelPerGrid()
-    {
-        return NUM_LEVEL_PER_GRID;
-    }
-
-    private void initGrids()
-    {
-        mLevels = new ArrayList<List<Level>>();
-
-        for (int i = 0; i < NUM_GRIDS; i++)
-        {
-            List<Level> list = getInitLevelList(i);
-            mLevels.add(list);
-        }
-    }
-
-    private void initGraphics(Resources res)
-    {
-        mGraphics = new Graphics();
-        mGraphics.setBitmapLock(BitmapFactory.decodeResource(res, R.drawable.lock));
-        mGraphics.setBitmap1star(BitmapFactory.decodeResource(res, R.drawable.star1));
-        mGraphics.setBitmap2stars(BitmapFactory.decodeResource(res, R.drawable.star2));
-        mGraphics.setBitmap3stars(BitmapFactory.decodeResource(res, R.drawable.star3));
-        mGraphics.setButtonShapeResId(sButtonShape);
-        
-        initColors(res, sColorsId, sColors);
-        initColors(res, sDarkColorsId, sDarkColors);
-        initColors(res, sLightColorsId, sLightColors);
-        mGraphics.setColors(sColors);
-        mGraphics.setLightColors(sLightColors);
-        mGraphics.setDarkColors(sDarkColors);
-        mGraphics.setViewWidth(600);
-        
-        initLabels(res, sGridTitlesId, sGridTitles);
-        mGraphics.setGridTitles(sGridTitles);
-    }
 
     /////////////////////////////////////////////////////////////////////////////
     // Game play
+    
+    
     public void startLevel(Level level)
     {
         Intent intent = new Intent(this, getGameActivity());
@@ -230,7 +253,7 @@ public abstract class LevelSelectorActivity extends FragmentActivity implements 
         Level lNext = null;
 
 
-        if (level < getLevelPerGrid())
+        if (level < NUM_LEVEL_PER_GRID )
         {
             lNext = list.get(level);
         }
@@ -259,85 +282,52 @@ public abstract class LevelSelectorActivity extends FragmentActivity implements 
         }
     }
 
-    /**
-     * {@inheritDoc }
-     */
-    @Override
-    protected void onResume()
+    void restore()
     {
-        Log.d(LevelSelectorActivity.class.getName(), "onResume");
-        super.onResume();
-
         SharedPreferences prefs = getPreferences(0);
-        int gridcount = prefs.getInt(KEY_GRID_COUNT, 0);
-        if (gridcount == NUM_GRIDS)
+        String json = prefs.getString(KEY_JSON, DEFAULT);
+        if (!json.equals(DEFAULT))
         {
-            for (int i = 0; i < gridcount; i++)
+            try
             {
-                List<Level> list = mLevels.get(i);
-                int gridsize = prefs.getInt(KEY_GRID_SIZE, 1);
-                for (int j = 0; j < gridsize; j++)
-                {
-                    Level level = list.get(j);
-                    level.setGrid(i);
-                    level.setLevel(prefs.getInt(getPrefKey(KEY_ID, i, j + 1), 0));
-                    level.setStatus(prefs.getInt(getPrefKey(KEY_STATUS, i, j + 1), 0));
-                    level.setScore(prefs.getInt(getPrefKey(KEY_SCORE, i, j + 1), 0));
-                }
+                JSONService.load(mLevels, json);
+            }
+            catch (JSONException ex)
+            {
+                Log.e("onResume : Error loading json", ex.getMessage());
             }
         }
-//        updateGrids();
 
     }
 
-    /**
-     * {@inheritDoc }
-     */
-    @Override
-    protected void onPause()
+    void save()
     {
-        Log.d(LevelSelectorActivity.class.getName(), "onPause");
-        super.onPause();
-
         SharedPreferences.Editor editor = getPreferences(0).edit();
-        int gridcount = NUM_GRIDS;
-
-
-        editor.putInt(KEY_GRID_COUNT, gridcount);
-        for (int i = 0; i < gridcount; i++)
+        try
         {
-            List<Level> list = mLevels.get(i);
-            int gridsize = list.size();
-            editor.putInt(KEY_GRID_SIZE, gridsize);
-            for (Level level : list)
-            {
-                editor.putInt(getPrefKey(KEY_ID, i, level.getLevel()), level.getLevel());
-                editor.putInt(getPrefKey(KEY_STATUS, i, level.getLevel()), level.getStatus());
-                editor.putInt(getPrefKey(KEY_SCORE, i, level.getLevel()), level.getScore());
-            }
-
+            editor.putString(KEY_JSON, JSONService.getJSON(mLevels));
+            editor.commit();
         }
-        editor.commit();
-    }
+        catch (JSONException ex)
+        {
+            Log.e("onPause : Error writing JSON data", ex.getMessage());
+        }
 
-    private String getPrefKey(String key, int grid, int level)
-    {
-        return "LEVEL-" + key + grid + ":" + level;
     }
 
     private void updateLevel(int grid, int level, int status, int score)
     {
-        Log.d(LevelSelectorActivity.class.getName(), "updateLevel " + grid + " " + level + " " + status + " " + score);
-        SharedPreferences.Editor editor = getPreferences(0).edit();
-        editor.putInt(getPrefKey(KEY_STATUS, grid, level), status);
-        editor.putInt(getPrefKey(KEY_SCORE, grid, level), score);
-        editor.commit();
+        save();
     }
 
     private void update(int grid)
     {
         mAdapter.notifyDataSetChanged();
     }
+    
+    
+    ////////////////////////////////////////////////////////////////////////////
+    // Pager adapter
 
     public class MyAdapter extends FragmentPagerAdapter
     {
@@ -372,6 +362,5 @@ public abstract class LevelSelectorActivity extends FragmentActivity implements 
         {
             return POSITION_NONE;
         }
-        
     }
 }
