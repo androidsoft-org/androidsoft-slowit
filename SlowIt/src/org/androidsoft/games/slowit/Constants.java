@@ -1,4 +1,4 @@
-/* Copyright (c) 2010-2011 Pierre LEVY androidsoft.org
+/* Copyright (c) 2010-2013 Pierre LEVY androidsoft.org
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -21,5 +21,7 @@ package org.androidsoft.games.slowit;
  */
 public class Constants
 {
-    final static int VERSION = 7;
+    public static final String LOG_TAG = "SlowIt";
+    public static final int VERSION = 7;
+    
 }

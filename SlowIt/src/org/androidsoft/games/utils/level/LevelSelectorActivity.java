@@ -1,4 +1,4 @@
-/* Copyright (c) 2010-2011 Pierre LEVY androidsoft.org
+/* Copyright (c) 2010-2013 Pierre LEVY androidsoft.org
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -30,17 +30,13 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import org.androidsoft.games.slowit.Constants;
 import org.androidsoft.games.slowit.R;
 import org.json.JSONException;
 
 public abstract class LevelSelectorActivity extends FragmentActivity implements OnLevelClickedListener
 {
 
-    private static final String KEY_GRID_COUNT = "GRID_COUNT";
-    private static final String KEY_GRID_SIZE = "GRID_SIZE";
-    private static final String KEY_ID = "LEVEL_ID";
-    private static final String KEY_STATUS = "LEVEL_STATUS";
-    private static final String KEY_SCORE = "LEVEL_SCORE";
     private static final String KEY_JSON = "JSON";
     private static final String DEFAULT = "DEF_JSON";
     static final int NUM_GRIDS = 5;
@@ -129,7 +125,7 @@ public abstract class LevelSelectorActivity extends FragmentActivity implements 
     @Override
     protected void onPause()
     {
-        Log.d(LevelSelectorActivity.class.getName(), "onPause");
+        Log.d( Constants.LOG_TAG, "onPause");
         super.onPause();
 
         save();
@@ -142,7 +138,7 @@ public abstract class LevelSelectorActivity extends FragmentActivity implements 
     @Override
     protected void onResume()
     {
-        Log.d(LevelSelectorActivity.class.getName(), "onResume");
+        Log.d( Constants.LOG_TAG, "onResume");
         super.onResume();
 
         restore();
@@ -221,7 +217,7 @@ public abstract class LevelSelectorActivity extends FragmentActivity implements 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent)
     {
-        Log.d(LevelSelectorActivity.class.getName(), "onActivityResult");
+        Log.d( Constants.LOG_TAG, "onActivityResult");
 
         if (intent != null)
         {
@@ -239,9 +235,9 @@ public abstract class LevelSelectorActivity extends FragmentActivity implements 
                 {
                     l.updateStatus(status);
                     l.updateScore(score);
-                    updateLevel(grid, level, l.getStatus(), l.getScore());
+                    save();
                     unlockNextLevel(level, grid, listGridLevels);
-                    update(grid);
+                    updateUI();
                 }
             }
         }
@@ -270,7 +266,7 @@ public abstract class LevelSelectorActivity extends FragmentActivity implements 
         if (lNext != null)
         {
             lNext.unlock();
-            updateLevel(grid, lNext.getLevel(), lNext.getStatus(), lNext.getScore());
+            save();
         }
     }
 
@@ -294,7 +290,7 @@ public abstract class LevelSelectorActivity extends FragmentActivity implements 
             }
             catch (JSONException ex)
             {
-                Log.e("onResume : Error loading json", ex.getMessage());
+                Log.e( Constants.LOG_TAG , "on Resume : Error loading JSON : " + ex.getMessage());
             }
         }
 
@@ -310,17 +306,12 @@ public abstract class LevelSelectorActivity extends FragmentActivity implements 
         }
         catch (JSONException ex)
         {
-            Log.e("onPause : Error writing JSON data", ex.getMessage());
+            Log.e(Constants.LOG_TAG , " onPause : Error writing JSON data : " + ex.getMessage());
         }
 
     }
 
-    private void updateLevel(int grid, int level, int status, int score)
-    {
-        save();
-    }
-
-    private void update(int grid)
+    private void updateUI()
     {
         mAdapter.notifyDataSetChanged();
     }

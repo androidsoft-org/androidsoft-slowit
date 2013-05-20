@@ -1,4 +1,4 @@
-/* Copyright (c) 2010-2011 Pierre LEVY androidsoft.org
+/* Copyright (c) 2010-2013 Pierre LEVY androidsoft.org
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -20,10 +20,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -68,6 +71,7 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback
         holder.addCallback(this);
         mActivity = activity;
         mLevelManager = levelManager;
+        mContext = context;
 
         thread = new GameThread(holder, context, new Handler()
         {
@@ -85,6 +89,9 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback
 
                     case EVENT_LEVEL_FAILED:
                         onLevelFailed(level, score);
+                        break;
+
+                    default:
                         break;
 
 
@@ -195,7 +202,7 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback
                 mPreviousY = y;
                 for (Ball b : thread.mBalls)
                 {
-                    Log.d("GameView:ACTION_DOWN", "Ball #" + b.mIndex + " X=" + b.mX + " Y=" + b.mY);
+                    Log.d(Constants.LOG_TAG, "Ball #" + b.mIndex + " X=" + b.mX + " Y=" + b.mY);
 
                 }
                 break;
@@ -206,6 +213,10 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback
                 ball.setVelocity(dx, -dy);
                 mPreviousX = x;
                 mPreviousY = y;
+                break;
+
+            default:
+                break;
         }
         return true;
     }
@@ -326,7 +337,9 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback
             mMode = STATE_READY;
 
             Resources res = context.getResources();
-            mBackgroundImage = BitmapFactory.decodeResource(res, R.drawable.background);
+            Drawable background = res.getDrawable( R.drawable.background );
+//            mBackgroundImage = BitmapFactory.decodeResource(res, R.drawable.background);
+            mBackgroundImage = drawableToBitmap(background);
 
             mInsideTextPaint = new Paint();
             mInsideTextPaint.setAntiAlias(true);
@@ -351,9 +364,25 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback
             mInsidePaint.setARGB(100, 255, 255, 255);
 
             BallList.setBallImage(res.getDrawable(R.drawable.ball));
-            Log.d("GameView", "GameThread constructor");
+            Log.d(Constants.LOG_TAG, "GameThread constructor");
 
 
+        }
+
+        public Bitmap drawableToBitmap(Drawable drawable)
+        {
+            if (drawable instanceof BitmapDrawable)
+            {
+                return ((BitmapDrawable) drawable).getBitmap();
+            }
+
+//            Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Config.ARGB_8888);
+            Bitmap bitmap = Bitmap.createBitmap( 50 , 50, Config.ARGB_8888);
+            Canvas canvas = new Canvas(bitmap);
+            drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+            drawable.draw(canvas);
+
+            return bitmap;
         }
 
         /**
@@ -363,7 +392,7 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback
         {
             synchronized (mSurfaceHolder)
             {
-                Log.d("GameView", "doStart");
+                Log.d(Constants.LOG_TAG, "doStart");
                 setState(STATE_RUNNING);
                 mTimeLevel = 0;
                 mStartLevel = System.currentTimeMillis();
@@ -371,7 +400,8 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback
                 mTimeInside = -1;
                 mLevel = mLevelManager.getLevel() + 10 * mLevelManager.getGrid();
                 int nBallCount = 1 + (mLevel / 7);
-                mRadius = 50 - 5 * (mLevel % 7) + nBallCount * 10;
+                float fDensity = mContext.getResources().getDisplayMetrics().density;
+                mRadius = (int) ((50f - 5f * (mLevel % 7) + nBallCount * 10f) * fDensity);
                 int nInitialVelocity = 5 * (mLevel % 7);
                 mBalls = new BallList(mCanvasWidth, mCanvasHeight, nBallCount, nInitialVelocity);
                 mLevelDuration = LEVEL_DURATION + 20 * nBallCount;
@@ -385,7 +415,7 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback
         {
             synchronized (mSurfaceHolder)
             {
-                Log.d("GameView", "pause");
+                Log.d(Constants.LOG_TAG, "pause");
                 if (mMode == STATE_RUNNING)
                 {
                     setState(STATE_PAUSE);
@@ -401,7 +431,7 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback
             // Move the real time clock up to now
             synchronized (mSurfaceHolder)
             {
-                Log.d("GameView", "unpause");
+                Log.d(Constants.LOG_TAG, "unpause");
                 if (mBalls != null)
                 {
                     mBalls.setLastTime(System.currentTimeMillis() + 100);
@@ -422,7 +452,7 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback
         {
             synchronized (mSurfaceHolder)
             {
-                Log.d("GameView", "saveState");
+                Log.d(Constants.LOG_TAG, "saveState");
                 if (map != null)
                 {
                     map.putBoolean(KEY_RUN, mRun);
@@ -449,7 +479,7 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback
         {
             synchronized (mSurfaceHolder)
             {
-                Log.d("GameView", "restoreState");
+                Log.d(Constants.LOG_TAG, "restoreState");
                 setState(STATE_PAUSE);
                 if (mBalls != null)
                 {
@@ -546,7 +576,7 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback
              */
             synchronized (mSurfaceHolder)
             {
-                Log.d("GameView", "setState:" + mode);
+                Log.d(Constants.LOG_TAG, "setState:" + mode);
                 mMode = mode;
 
                 if ((mMode == STATE_WIN) || (mMode == STATE_LEVEL_FAILED))
@@ -610,7 +640,7 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback
 
         private void updatePhysics()
         {
-            //           Log.d("GameView", "updatePhysics");
+            //           Log.d( Constants.LOG_TAG , "updatePhysics");
             final long now = System.currentTimeMillis();
 
             if (mBalls == null)

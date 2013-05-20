@@ -1,4 +1,4 @@
-/* Copyright (c) 2010-2011 Pierre LEVY androidsoft.org
+/* Copyright (c) 2010-2013 Pierre LEVY androidsoft.org
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -60,9 +60,7 @@ public class LevelAdapter extends BaseAdapter
     {
         LevelView imageView;
         Level level = mLevels.get(position);
-        int width = parent.getWidth();
-//        Log.d( "androidsoft.org" , "View width" +  parent.getWidth());
-//        mGraphics.setViewWidth(width);
+
         if (convertView == null)
         {
             imageView = new LevelView(mContext, level , mGraphics );
