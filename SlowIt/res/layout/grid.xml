@@ -15,8 +15,8 @@
         android:textStyle="bold"
         android:gravity="center"
         android:textColor="@color/title"
-        android:padding="20sp"
-        android:layout_marginBottom="35dp"
+        android:padding="10dp"
+        android:layout_marginBottom="15dp"
 />
 
     <GridView android:id="@+id/level_grid1"
@@ -29,7 +29,7 @@
                       android:numColumns="3"
                       android:columnWidth="80dp"
                       android:stretchMode="columnWidth"
-                      android:layout_marginBottom="35dp"
+                      android:layout_marginBottom="15dp"
                       android:gravity="center"/>
     
     <com.viewpagerindicator.CirclePageIndicator

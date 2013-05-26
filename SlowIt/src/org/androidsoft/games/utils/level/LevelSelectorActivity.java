@@ -179,7 +179,12 @@ public abstract class LevelSelectorActivity extends FragmentActivity implements 
         mGraphics.setColors(sColors);
         mGraphics.setLightColors(sLightColors);
         mGraphics.setDarkColors(sDarkColors);
-        mGraphics.setViewWidth(600);
+        
+        int width = res.getDisplayMetrics().widthPixels;
+        int height = res.getDisplayMetrics().heightPixels;
+        
+        int viewWidth = ( width < height ) ? width : ( height * 4 ) / 5 ;
+        mGraphics.setViewWidth( viewWidth );
 
         initLabels(res, sGridTitlesId, sGridTitles);
         mGraphics.setGridTitles(sGridTitles);

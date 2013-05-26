@@ -14,14 +14,15 @@
         android:textStyle="bold"
         android:gravity="center"
         android:textColor="@color/title"
-        android:padding="10sp" />
+        android:padding="10dp" />
     
     
 
     <GridView android:id="@+id/level_grid1"
         android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:padding="5dp"
         android:paddingTop="20dp"
         android:verticalSpacing="5dp"
