@@ -21,7 +21,6 @@ import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Typeface;
@@ -337,8 +336,28 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback
             mMode = STATE_READY;
 
             Resources res = context.getResources();
-            Drawable background = res.getDrawable( R.drawable.background );
-//            mBackgroundImage = BitmapFactory.decodeResource(res, R.drawable.background);
+            Drawable background;
+            switch (mLevelManager.getGrid())
+            {
+                case 0:
+                    background = res.getDrawable(R.drawable.background1);
+                    break;
+                case 1:
+                    background = res.getDrawable(R.drawable.background2);
+                    break;
+                case 2:
+                    background = res.getDrawable(R.drawable.background3);
+                    break;
+                case 3:
+                    background = res.getDrawable(R.drawable.background4);
+                    break;
+                case 4:
+                    background = res.getDrawable(R.drawable.background5);
+                    break;
+                default:
+                    background = res.getDrawable(R.drawable.background1);
+                    break;
+            }
             mBackgroundImage = drawableToBitmap(background);
 
             mInsideTextPaint = new Paint();
@@ -369,7 +388,7 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback
 
         }
 
-        public Bitmap drawableToBitmap(Drawable drawable)
+        public final Bitmap drawableToBitmap(Drawable drawable)
         {
             if (drawable instanceof BitmapDrawable)
             {
@@ -377,7 +396,7 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback
             }
 
 //            Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Config.ARGB_8888);
-            Bitmap bitmap = Bitmap.createBitmap( 50 , 50, Config.ARGB_8888);
+            Bitmap bitmap = Bitmap.createBitmap(50, 50, Config.ARGB_8888);
             Canvas canvas = new Canvas(bitmap);
             drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
             drawable.draw(canvas);

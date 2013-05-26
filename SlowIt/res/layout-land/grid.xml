@@ -30,6 +30,15 @@
         android:columnWidth="60dp"
         android:stretchMode="columnWidth"
         android:gravity="center"/>
+    
+        <com.viewpagerindicator.CirclePageIndicator
+	android:id="@+id/circles"
+	android:layout_height="fill_parent"
+	android:layout_width="fill_parent"
+        android:gravity="center"
+        android:padding="20dp"
+     />
+
 
 </LinearLayout>
 

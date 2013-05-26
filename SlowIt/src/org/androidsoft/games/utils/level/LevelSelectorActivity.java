@@ -33,6 +33,7 @@ import java.util.List;
 import org.androidsoft.games.slowit.Constants;
 import org.androidsoft.games.slowit.R;
 import org.json.JSONException;
+import com.viewpagerindicator.CirclePageIndicator;
 
 public abstract class LevelSelectorActivity extends FragmentActivity implements OnLevelClickedListener
 {
@@ -96,10 +97,8 @@ public abstract class LevelSelectorActivity extends FragmentActivity implements 
 
     public abstract Class<?> getGameActivity();
 
-    
     ////////////////////////////////////////////////////////////////////////////
     // Life circle events
-    
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -117,6 +116,7 @@ public abstract class LevelSelectorActivity extends FragmentActivity implements 
         mContext = getApplicationContext();
         mListener = this;
 
+
     }
 
     /**
@@ -125,7 +125,7 @@ public abstract class LevelSelectorActivity extends FragmentActivity implements 
     @Override
     protected void onPause()
     {
-        Log.d( Constants.LOG_TAG, "onPause");
+        Log.d(Constants.LOG_TAG, "onPause");
         super.onPause();
 
         save();
@@ -138,7 +138,7 @@ public abstract class LevelSelectorActivity extends FragmentActivity implements 
     @Override
     protected void onResume()
     {
-        Log.d( Constants.LOG_TAG, "onResume");
+        Log.d(Constants.LOG_TAG, "onResume");
         super.onResume();
 
         restore();
@@ -147,7 +147,6 @@ public abstract class LevelSelectorActivity extends FragmentActivity implements 
 
     ////////////////////////////////////////////////////////////////////////////
     // Initializations
-    
     private void initGrids()
     {
         mLevels = new ArrayList<List<Level>>();
@@ -202,11 +201,8 @@ public abstract class LevelSelectorActivity extends FragmentActivity implements 
         }
     }
 
-
     /////////////////////////////////////////////////////////////////////////////
     // Game play
-    
-    
     public void startLevel(Level level)
     {
         Intent intent = new Intent(this, getGameActivity());
@@ -217,7 +213,7 @@ public abstract class LevelSelectorActivity extends FragmentActivity implements 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent)
     {
-        Log.d( Constants.LOG_TAG, "onActivityResult");
+        Log.d(Constants.LOG_TAG, "onActivityResult");
 
         if (intent != null)
         {
@@ -249,7 +245,7 @@ public abstract class LevelSelectorActivity extends FragmentActivity implements 
         Level lNext = null;
 
 
-        if (level < NUM_LEVEL_PER_GRID )
+        if (level < NUM_LEVEL_PER_GRID)
         {
             lNext = list.get(level);
         }
@@ -290,7 +286,7 @@ public abstract class LevelSelectorActivity extends FragmentActivity implements 
             }
             catch (JSONException ex)
             {
-                Log.e( Constants.LOG_TAG , "on Resume : Error loading JSON : " + ex.getMessage());
+                Log.e(Constants.LOG_TAG, "on Resume : Error loading JSON : " + ex.getMessage());
             }
         }
 
@@ -306,7 +302,7 @@ public abstract class LevelSelectorActivity extends FragmentActivity implements 
         }
         catch (JSONException ex)
         {
-            Log.e(Constants.LOG_TAG , " onPause : Error writing JSON data : " + ex.getMessage());
+            Log.e(Constants.LOG_TAG, " onPause : Error writing JSON data : " + ex.getMessage());
         }
 
     }
@@ -315,11 +311,9 @@ public abstract class LevelSelectorActivity extends FragmentActivity implements 
     {
         mAdapter.notifyDataSetChanged();
     }
-    
-    
+
     ////////////////////////////////////////////////////////////////////////////
     // Pager adapter
-
     public class MyAdapter extends FragmentPagerAdapter
     {
 
@@ -342,8 +336,8 @@ public abstract class LevelSelectorActivity extends FragmentActivity implements 
             Fragment f = mMapFragment.get(position);
             if (f == null)
             {
-                f = LevelFragment.newInstance(position, mContext, mLevels, mGraphics, mListener);
-                mMapFragment.put(position, f);
+                f = LevelFragment.newInstance(position, mContext, mLevels, mGraphics, mListener, mPager );
+//                mMapFragment.put(position, f);
             }
             return f;
         }

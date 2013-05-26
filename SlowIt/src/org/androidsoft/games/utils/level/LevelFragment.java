@@ -18,12 +18,14 @@ package org.androidsoft.games.utils.level;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
+import com.viewpagerindicator.CirclePageIndicator;
 import java.util.List;
 import org.androidsoft.games.slowit.R;
 
@@ -39,25 +41,27 @@ public class LevelFragment extends Fragment
     static List<List<Level>> mLevels;
     static Graphics mGraphics;
     static OnLevelClickedListener mListener;
+    static ViewPager mPager;
     GridView mGridView;
+    CirclePageIndicator mCircleIndicator;
     
-    
-    private void setContext( Context context, List<List<Level>> levels, Graphics graphics, OnLevelClickedListener listener )
+    private void setContext( Context context, List<List<Level>> levels, Graphics graphics, OnLevelClickedListener listener, ViewPager pager )
     {
         mContext = context;
         mLevels = levels;
         mGraphics = graphics;
         mListener = listener;
+        mPager = pager;
     }
 
     /**
      * Create a new instance of CountingFragment, providing "num" as an
      * argument.
      */
-    static Fragment newInstance( int num , Context context, List<List<Level>> levels, Graphics graphics, OnLevelClickedListener listener )
+    static Fragment newInstance( int num , Context context, List<List<Level>> levels, Graphics graphics, OnLevelClickedListener listener, ViewPager pager )
     {
         LevelFragment f = new LevelFragment();
-        f.setContext( context, levels, graphics, listener);
+        f.setContext( context, levels, graphics, listener, pager );
 
         // Supply num input as an argument.
         Bundle args = new Bundle();
@@ -92,6 +96,19 @@ public class LevelFragment extends Fragment
         mGridView = (GridView) v.findViewById(R.id.level_grid1);
         mGridView.setAdapter((ListAdapter) new LevelAdapter(mContext, mLevels.get(mNum), mGraphics));
         mGridView.setOnItemClickListener(new LevelClickListener( mContext, mLevels.get(mNum), mListener ));
+        
+                //Bind the title indicator to the adapter
+        mCircleIndicator = (CirclePageIndicator) v.findViewById(R.id.circles);
+        mCircleIndicator.setViewPager( mPager );
+
+        final float density = getResources().getDisplayMetrics().density;
+        mCircleIndicator.setBackgroundColor(mGraphics.getDarkColors( mNum ));
+        mCircleIndicator.setRadius(8 * density);
+        mCircleIndicator.setPageColor(mGraphics.getLightColors( mNum ));
+        mCircleIndicator.setFillColor( 0xFFFFFFFF );
+        mCircleIndicator.setStrokeColor(0xFFFFFFFF);
+        mCircleIndicator.setStrokeWidth(1 * density);
+
         return v;
     }
 
@@ -101,6 +118,10 @@ public class LevelFragment extends Fragment
         {
             mGridView.setAdapter((ListAdapter) new LevelAdapter(mContext, mLevels.get(mNum), mGraphics));
             mGridView.invalidate();
+        }
+        if( mCircleIndicator != null )
+        {
+            mCircleIndicator.invalidate();
         }
     }
 
