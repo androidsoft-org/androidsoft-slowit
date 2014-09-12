@@ -1,4 +1,4 @@
-/* Copyright (c) 2010-2013 Pierre LEVY androidsoft.org
+/* Copyright (c) 2010-2014 Pierre LEVY androidsoft.org
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -53,16 +53,16 @@ public class CreditsActivity  extends Activity
         p.setArrayCreditsRes(R.array.credits);
 
         p.setColorDefault( 0xFFFFFFFF);
-        p.setTextSizeDefault( 70 );
+        p.setTextSizeDefault( 80 );
         p.setTypefaceDefault(Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD));
-        p.setSpacingBeforeDefault( 20 );
-        p.setSpacingAfterDefault( 30 );
+        p.setSpacingBeforeDefault( 22 );
+        p.setSpacingAfterDefault( 32 );
 
         p.setColorCategory( 0xFFFFFFFF);
-        p.setTextSizeCategory( 35 );
+        p.setTextSizeCategory( 40 );
         p.setTypefaceCategory(Typeface.create(Typeface.SANS_SERIF, Typeface.ITALIC));
-        p.setSpacingBeforeCategory( 20 );
-        p.setSpacingAfterCategory( 20 );
+        p.setSpacingBeforeCategory( 22 );
+        p.setSpacingAfterCategory( 22 );
 
         return p;
 
