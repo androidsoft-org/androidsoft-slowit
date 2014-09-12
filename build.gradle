@@ -1,0 +1,35 @@
+apply plugin: 'com.android.application'
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:0.12.0'
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile project(':libraries:viewpagerindicator')
+    compile fileTree( dir: 'libs', include:'*.jar' )
+}
+
+android {
+
+    compileSdkVersion 19
+
+    buildToolsVersion "19.1.0"
+
+    lintOptions {
+        enable 'UnusedIds', 'EasterEgg' //, 'NewerVersionAvailable'
+    }
+
+    apply from: 'sign.gradle'
+}
+
+

@@ -1,0 +1,9 @@
+/.nb-gradle/private/
+/build/
+/.gradle/
+/bin/
+/gen/
+/library/gen/
+/libraries/viewpagerindicator/gen/
+/libraries/viewpagerindicator/build/
+/libraries/viewpagerindicator/.nb-gradle/profiles/private/
